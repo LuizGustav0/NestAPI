@@ -4,6 +4,7 @@ import { UpdatePutUserDTO } from "./dto/update-put-user.dto";
 import { UpdatePatchUserDTO } from "./dto/update-patch-user.dto";
 import { UserService } from "./user.service";
 import { LogInterceptor } from "src/interceptors/log.interceptor";
+import { ParamId } from "src/decorators/params-id.decorator";
 
 //Todas as rotas do user
 @UseInterceptors(LogInterceptor) 
@@ -25,22 +26,22 @@ export class UserController {
     }
 
     @Get(":id")
-    async show(@Param("id", ParseIntPipe) id: number){
+    async show(@ParamId() id: number){
         return this.userService.show(id);
     }
 
     @Put(":id")
-    async update(@Body()  data: UpdatePutUserDTO, @Param("id", ParseIntPipe) id: number){
+    async update(@Body()  data: UpdatePutUserDTO, @ParamId() id: number){
         return this.userService.update(id, data);
     }
 
     @Patch(":id")
-    async updateParcial(@Body() data: UpdatePatchUserDTO, @Param("id", ParseIntPipe) id: number){
+    async updateParcial(@Body() data: UpdatePatchUserDTO, @ParamId() id: number){
         return this.userService.updateParcial(id, data);    
     }
 
     @Delete(":id")
-    async delete(@Param("id", ParseIntPipe) id: number){
+    async delete(@ParamId() id: number){
         return this.userService.delete(id);   
     }
 
