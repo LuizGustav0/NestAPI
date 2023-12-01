@@ -1,11 +1,17 @@
-import { Body, Controller, Get, Param, Post, Put, Patch, Delete, ParseIntPipe, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, Patch, Delete, ParseIntPipe, UseInterceptors, UseGuards } from "@nestjs/common";
 import { CreateUserDTO } from "./dto/create-user.dto";
 import { UpdatePutUserDTO } from "./dto/update-put-user.dto";
 import { UpdatePatchUserDTO } from "./dto/update-patch-user.dto";
 import { UserService } from "./user.service";
 import { LogInterceptor } from "src/interceptors/log.interceptor";
 import { ParamId } from "src/decorators/params-id.decorator";
+import { Roles } from "src/decorators/roles.decorator";
+import { Role } from "src/enums/role.enum";
+import { RoleGuard } from "src/guards/role.guard";
+import { AuthGuard } from "src/guards/auth.guard";
 
+@Roles(Role.Admin)
+@UseGuards(AuthGuard,RoleGuard)
 //Todas as rotas do user
 @UseInterceptors(LogInterceptor) 
 @Controller("users")
@@ -13,6 +19,7 @@ export class UserController {
 
     constructor(private readonly userService: UserService){}
     
+
     // Apenas em uma rota
     //@UseInterceptors(LogInterceptor)
     @Post()
@@ -20,6 +27,7 @@ export class UserController {
         return this.userService.create(data);
     }
 
+    
     @Get()
     async list(){
         return this.userService.list();
