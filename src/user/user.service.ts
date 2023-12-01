@@ -37,7 +37,7 @@ export class UserService {
     }
 
 
-    async update(id: number, {name, email, password, birthAt}: UpdatePutUserDTO){
+    async update(id: number, {name, email, password, birthAt, role}: UpdatePutUserDTO){
 
         await this.exists(id)
 
@@ -46,7 +46,8 @@ export class UserService {
                 name, 
                 email, 
                 password, 
-                birthAt: birthAt ? new Date(birthAt) : null
+                birthAt: birthAt ? new Date(birthAt) : null,
+                role
             },
             where: {
                 id
@@ -54,7 +55,7 @@ export class UserService {
         });
     }
 
-    async updateParcial(id: number, {name, email, password, birthAt}: UpdatePatchUserDTO){
+    async updateParcial(id: number, {name, email, password, birthAt, role}: UpdatePatchUserDTO){
 
         await this.exists(id)
 
@@ -75,6 +76,10 @@ export class UserService {
         
         if(password) {
             data.password = password
+        }
+
+        if(role) {
+            data.role = role
         }
 
 
