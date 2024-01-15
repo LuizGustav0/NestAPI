@@ -15,24 +15,25 @@ export class UserService {
         private usersRepository: Repository<UserEntity>
     ) {}
 
-    async create(data: CreateUserDTO){   
-
-        if(this.usersRepository.exist({
+    async create(data: CreateUserDTO) {
+        if (
+          await this.usersRepository.exist({
             where: {
-                email: data.email
-            }
-        })) {
-            throw new BadRequestException("Este e-mail já está sendo usado.")
+              email: data.email,
+            },
+          })
+        ) {
+          throw new BadRequestException('Este e-mail já está sendo usado.');
         }
-
+    
         const salt = await bcrypt.genSalt();
-        data.password = await bcrypt.hash(data.password, salt)
-
-        const user = this.usersRepository.create(data)
-
-        
-        return this.usersRepository.save(user)      
-    }
+    
+        data.password = await bcrypt.hash(data.password, salt);
+    
+        const user = this.usersRepository.create(data);
+    
+        return this.usersRepository.save(user);
+      }
 
     async list(){
 
