@@ -7,6 +7,8 @@ import { mailerServiceMock } from "../testing/mailer-service.mock"
 import { userEntityList } from "../testing/user-entity-list.mock"
 import { accessToken } from "../testing/access-token.mock"
 import { jwtPayload } from "../testing/jwt-payload.mock"
+import { resetToken } from "../testing/reset-token.mock"
+import { authRegisterDTO } from "../testing/auth-register-sto.mock"
 
 describe('AuthService', () => {
 
@@ -23,7 +25,7 @@ describe('AuthService', () => {
             ]
         }).compile();
 
-        authService = module.get(AuthService);
+        authService = module.get<AuthService>(AuthService);
     })
 
     test('Validar a definição', () => {
@@ -51,7 +53,35 @@ describe('AuthService', () => {
         });
       });
 
+   
+      describe('Autenticação', () => {
+        test('login method', async () => {
+            const result = await authService.login('luizteste1232@gmail.com', 'Teste@333');
+      
+            expect(result).toEqual({ accessToken });
+          });
 
+          test('forget method', async () => {
+            const result = await authService.forget('luiz@teste.com');
+      
+            expect(result).toEqual(true);
+          });
+
+
+          test('reset method', async () => {
+            const result = await authService.reset('Teste@333', resetToken);
+      
+            expect(result).toEqual({ accessToken });
+          });
+
+
+          test('register method', async () => {
+            const result = await authService.register(authRegisterDTO);
+      
+            expect(result).toEqual({ accessToken });
+          });
+
+      });
    
 
 })

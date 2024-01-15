@@ -64,24 +64,20 @@ export class AuthService {
     }
 
 
-    async login(email: string, password:string) {
-      const user = await  this.usersRepository.findOne({
-        where: {
-          email 
-        }          
-       })
-
-        if(!user){
-            throw new UnauthorizedException('E-mail e/ou senha incorretos.')
+    async login(email: string, password: string) {
+        const user = await this.usersRepository.findOneBy({
+          email,
+        });
+    
+        if (!user) {
+          throw new UnauthorizedException('E-mail e/ou senha incorretos.');
         }
-
-        if(!await bcrypt.compare(password, user.password)) {
-            throw new UnauthorizedException('E-mail e/ou senha incorretos.')
+    
+        if (!(await bcrypt.compare(password, user.password))) {
+          throw new UnauthorizedException('E-mail e/ou senha incorretos.');
         }
-
-
-        return this.createToken(user)
-
+    
+        return this.createToken(user);
     }
 
     async forget(email: string) {
@@ -152,6 +148,8 @@ export class AuthService {
     }
 
     async register(data: AuthRegisterDTO){
+
+        delete data.role;
 
         const user = await this.userService.create(
             data           
