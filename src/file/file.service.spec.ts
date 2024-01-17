@@ -20,7 +20,7 @@ describe('FileService', () => {
   describe('Teste do File Service', () => {
     test('upload method', async () => {
       const photo = await getPhoto();
-      const filename = 'photo.jpg';
+      const filename = 'photo.png';
       fileService.upload(photo, filename);
     });
   });

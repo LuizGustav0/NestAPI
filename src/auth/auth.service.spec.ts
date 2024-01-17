@@ -8,7 +8,7 @@ import { userEntityList } from "../testing/user-entity-list.mock"
 import { accessToken } from "../testing/access-token.mock"
 import { jwtPayload } from "../testing/jwt-payload.mock"
 import { resetToken } from "../testing/reset-token.mock"
-import { authRegisterDTO } from "../testing/auth-register-sto.mock"
+import { authRegisterDTO } from "../testing/auth-register-dto.mock"
 
 describe('AuthService', () => {
 
@@ -64,7 +64,7 @@ describe('AuthService', () => {
           test('forget method', async () => {
             const result = await authService.forget('luiz@teste.com');
       
-            expect(result).toEqual(true);
+            expect(result).toEqual({success: true});
           });
 
 
