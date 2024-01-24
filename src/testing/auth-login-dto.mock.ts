@@ -1,7 +1,6 @@
-import { AuthLoginDTO } from "../auth/dto/auth-login.dto";
+import { AuthLoginDTO } from '../auth/dto/auth-login.dto';
 
-
-export const authLoginDTO:AuthLoginDTO =  { 
-    email: 'email@gmail.com',
-    password: 'Rsasas@98'
-}
+export const authLoginDTO: AuthLoginDTO = {
+  email: 'email@gmail.com',
+  password: 'Rsasas@98',
+};
