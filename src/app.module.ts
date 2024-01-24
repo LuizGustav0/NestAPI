@@ -11,15 +11,18 @@ import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './user/entity/user.entity';
 
-
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    ThrottlerModule.forRoot([{
-      ttl: 60,
-      limit: 100
-    }]),
-    forwardRef(() => UserModule), 
+    ConfigModule.forRoot({
+      envFilePath: process.env.ENV === 'test' ? '.env.test' : '.env',
+    }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60,
+        limit: 100,
+      },
+    ]),
+    forwardRef(() => UserModule),
     forwardRef(() => AuthModule),
     MailerModule.forRoot({
       transport: {
@@ -27,8 +30,8 @@ import { UserEntity } from './user/entity/user.entity';
         port: 587,
         auth: {
           user: 'lottie.adams4@ethereal.email',
-          pass: 'WUyV8cjzv1TnTxd8dS'
-        }
+          pass: 'WUyV8cjzv1TnTxd8dS',
+        },
       }, //utilizado fake criado em https://ethereal.email/create
       defaults: {
         from: '"teste email" <lottie.adams4@ethereal.email>',
@@ -49,13 +52,16 @@ import { UserEntity } from './user/entity/user.entity';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       entities: [UserEntity],
-      synchronize: process.env.ENV === "development" 
-    })
+      synchronize: process.env.ENV === 'development',
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService, {
-    provide: APP_GUARD,
-    useClass: ThrottlerGuard
-  }],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}
